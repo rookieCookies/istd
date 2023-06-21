@@ -3,9 +3,11 @@
 #[macro_export]
 macro_rules! index_map {
     ($map: ident, $key: ident, $ty: ty) => {
-        pub struct $key(std::num::NonZeroUsize);
+        #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Default, Debug, Hash)]
+        pub struct $key(usize);
 
         
+        #[derive(Debug, PartialEq)]
         pub struct $map {
             vec: Vec<$ty>,
         }
@@ -14,17 +16,17 @@ macro_rules! index_map {
         impl $map {
             pub fn push(&mut self, value: $ty) -> $key {
                 self.vec.push(value);
-                $key(std::num::NonZeroUsize::new(self.vec.len()).unwrap())
+                $key(self.vec.len() - 1)
             }
 
 
             pub fn get(&self, index: $key) -> Option<&$ty> {
-                self.vec.get(index.0.get()-1)
+                self.vec.get(index.0)
             }
 
             
             pub fn get_mut(&mut self, index: $key) -> Option<&mut $ty> {
-                self.vec.get_mut(index.0.get()-1)
+                self.vec.get_mut(index.0)
             }
         }
 
@@ -33,14 +35,14 @@ macro_rules! index_map {
             type Output = $ty;
             
             fn index(&self, key: $key) -> &Self::Output {
-                &self.vec[key.0.get()-1]
+                &self.vec[key.0]
             }
         }
 
 
         impl core::ops::IndexMut<$key> for $map {
             fn index_mut(&mut self, key: $key) -> &mut Self::Output {
-                &mut self.vec[key.0.get()-1]
+                &mut self.vec[key.0]
             }
         }
     }
