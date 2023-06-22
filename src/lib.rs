@@ -24,3 +24,5 @@ macro_rules! static_assert_neq {
         const _ : () = assert!($e1 != $e2);
     }
 }
+
+global_index_map!(TestIndex, u32, privscope);

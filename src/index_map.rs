@@ -14,6 +14,16 @@ macro_rules! index_map {
 
 
         impl $map {
+            pub fn new() -> Self {
+                Self { vec: Vec::new() }
+            }
+
+
+            pub fn with_capacity(cap: usize) -> Self {
+                Self { vec: Vec::with_capacity(cap) }
+            }
+            
+            
             pub fn push(&mut self, value: $ty) -> $key {
                 self.vec.push(value);
                 $key(self.vec.len() - 1)
@@ -47,3 +57,4 @@ macro_rules! index_map {
         }
     }
 }
+
