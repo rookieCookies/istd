@@ -25,4 +25,3 @@ macro_rules! static_assert_neq {
     }
 }
 
-global_index_map!(TestIndex, u32, privscope);
