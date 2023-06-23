@@ -38,6 +38,21 @@ macro_rules! index_map {
             pub fn get_mut(&mut self, index: $key) -> Option<&mut $ty> {
                 self.vec.get_mut(index.0)
             }
+
+
+            pub fn len(&self) -> usize {
+                self.vec.len()
+            }
+
+
+            pub fn capacity(&self) -> usize {
+                self.vec.capacity()
+            }
+
+
+            pub fn is_empty(&self) -> bool {
+                self.vec.is_empty()
+            }
         }
 
 
