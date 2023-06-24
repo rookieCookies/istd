@@ -1,5 +1,6 @@
 pub mod index_map;
 pub mod num;
+pub mod bump_box;
 
 
 #[macro_export]
@@ -25,3 +26,14 @@ macro_rules! static_assert_neq {
     }
 }
 
+
+
+#[test]
+fn test() {
+    bump_box!(boxes, PreAllocMap, PreAllocBox, u32);
+
+    PreAllocMap::init(10);
+    for i in 0..10 {
+        PreAllocBox::new(i);
+    }
+}
