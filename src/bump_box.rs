@@ -77,6 +77,27 @@ macro_rules! bump_box {
                 }
             }
 
+
+            impl std::convert::AsMut<$ty> for $box {
+                fn as_mut(&mut self) -> &mut $ty {
+                    &mut *self
+                }
+            }
+
+
+            impl std::convert::AsRef<$ty> for $box {
+                fn as_ref(&self) -> &$ty {
+                    &mut *self
+                }
+            }
+
+
+            impl Clone for $box {
+                fn clone(&self) -> Self {
+                    Self::new((*self).clone())
+                }
+            }
+
         }
     }
 }
