@@ -98,6 +98,13 @@ macro_rules! bump_box {
                 }
             }
 
+
+            impl std::fmt::Debug for $box {
+                fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                    write!(f, "{}({:?})", stringify!($box), &*self)
+                }
+            }
+
         }
     }
 }
