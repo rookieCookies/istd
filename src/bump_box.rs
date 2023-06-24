@@ -87,14 +87,14 @@ macro_rules! bump_box {
 
             impl std::convert::AsRef<$ty> for $box {
                 fn as_ref(&self) -> &$ty {
-                    &mut *self
+                    &*self
                 }
             }
 
 
             impl Clone for $box {
                 fn clone(&self) -> Self {
-                    Self::new((*self).clone())
+                    Self::new(unsafe { &*self.ptr }.clone())
                 }
             }
 
