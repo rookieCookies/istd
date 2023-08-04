@@ -19,39 +19,52 @@ macro_rules! index_map {
             }
 
 
+            #[inline(always)]
             pub fn with_capacity(cap: usize) -> Self {
                 Self { vec: Vec::with_capacity(cap) }
             }
             
             
+            #[inline(always)]
             pub fn push(&mut self, value: $ty) -> $key {
                 self.vec.push(value);
                 $key(self.vec.len() - 1)
             }
 
 
+            #[inline(always)]
             pub fn get(&self, index: $key) -> Option<&$ty> {
                 self.vec.get(index.0)
             }
 
             
+            #[inline(always)]
             pub fn get_mut(&mut self, index: $key) -> Option<&mut $ty> {
                 self.vec.get_mut(index.0)
             }
 
 
+            #[inline(always)]
             pub fn len(&self) -> usize {
                 self.vec.len()
             }
 
 
+            #[inline(always)]
             pub fn capacity(&self) -> usize {
                 self.vec.capacity()
             }
 
 
+            #[inline(always)]
             pub fn is_empty(&self) -> bool {
                 self.vec.is_empty()
+            }
+
+
+            #[inline(always)]
+            pub fn as_slice(&self) -> &[$ty] {
+                &self.vec
             }
         }
 
@@ -70,6 +83,7 @@ macro_rules! index_map {
                 &mut self.vec[key.0]
             }
         }
+
     }
 }
 

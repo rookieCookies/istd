@@ -1,28 +1,29 @@
 pub mod index_map;
 pub mod num;
 pub mod bump_box;
+pub mod strings;
 
 
 #[macro_export]
 macro_rules! static_assert {
-    ($expr: expr) => {
-        const _ : () = assert!($expr);
+    ($expr: expr, $l: ident) => {
+        const $l : () = assert!($expr);
     }
 }
 
 
 #[macro_export]
 macro_rules! static_assert_eq {
-    ($e1: expr, $e2: expr) => {
-        const _ : () = assert!($e1 == $e2);
+    ($e1: expr, $e2: expr, $l: ident) => {
+        const $l : () = assert!($e1 == $e2);
     }
 }
 
 
 #[macro_export]
 macro_rules! static_assert_neq {
-    ($e1: expr, $e2: expr) => {
-        const _ : () = assert!($e1 != $e2);
+    ($e1: expr, $e2: expr, $l: ident) => {
+        const $l : () = assert!($e1 != $e2);
     }
 }
 
