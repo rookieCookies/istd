@@ -2,7 +2,7 @@
 /// Creates an index map with the given names
 /// containing the given type
 #[macro_export]
-macro_rules! index_map {
+macro_rules! index_vec {
     ($map: ident, $key: ident, $ty: ty) => {
         #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Default, Debug, Hash)]
         pub struct $key(usize);
@@ -10,47 +10,38 @@ macro_rules! index_map {
         
         #[derive(Debug, PartialEq)]
         pub struct $map {
-            map: std::collections::HashMap<std::rc::Rc<$ty>, $key>,
-            vec: Vec<std::rc::Rc<$ty>>,
+            vec: Vec<$ty>,
         }
 
 
         impl $map {
             pub fn new() -> Self {
-                Self { 
-                    vec: Vec::new(), 
-                    map: std::collections::HashMap::new()
-                }
+                Self { vec: Vec::new() }
             }
 
 
             #[inline(always)]
             pub fn with_capacity(cap: usize) -> Self {
-                Self { 
-                    vec: Vec::with_capacity(cap),
-                    map: std::collections::HashMap::with_capacity(cap)
-                }
+                Self { vec: Vec::with_capacity(cap) }
             }
             
             
             #[inline(always)]
-            pub fn insert(&mut self, value: $ty) -> $key {
-                if let Some(v) = self.map.get(&value) {
-                    return *v
-                }
-
-                
-                let rc = std::rc::Rc::new(value);
-                self.vec.push(rc.clone());
-                let key = $key(self.vec.len() - 1);
-                self.map.insert(rc, key);
-                key
+            pub fn push(&mut self, value: $ty) -> $key {
+                self.vec.push(value);
+                $key(self.vec.len() - 1)
             }
 
 
             #[inline(always)]
-            pub fn get(&self, index: $key) -> &$ty {
-                self.vec.get(index.0).map(|x| &**x).unwrap()
+            pub fn get(&self, index: $key) -> Option<&$ty> {
+                self.vec.get(index.0)
+            }
+
+            
+            #[inline(always)]
+            pub fn get_mut(&mut self, index: $key) -> Option<&mut $ty> {
+                self.vec.get_mut(index.0)
             }
 
 
@@ -70,15 +61,14 @@ macro_rules! index_map {
             pub fn is_empty(&self) -> bool {
                 self.vec.is_empty()
             }
-        }
 
 
-        impl Default for $map {
-            fn default() -> Self {
-                Self::new()
+            #[inline(always)]
+            pub fn as_slice(&self) -> &[$ty] {
+                &self.vec
             }
         }
-        
+
 
         impl core::ops::Index<$key> for $map {
             type Output = $ty;
@@ -88,8 +78,13 @@ macro_rules! index_map {
             }
         }
 
+
+        impl core::ops::IndexMut<$key> for $map {
+            fn index_mut(&mut self, key: $key) -> &mut Self::Output {
+                &mut self.vec[key.0]
+            }
+        }
+
     }
 }
 
-
-index_map!(Test, TestKey, usize);
