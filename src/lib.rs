@@ -1,4 +1,5 @@
 pub mod index_map;
+pub mod index_vec;
 pub mod num;
 pub mod bump_box;
 pub mod strings;
