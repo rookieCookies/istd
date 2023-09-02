@@ -91,5 +91,3 @@ macro_rules! index_map {
     }
 }
 
-
-index_map!(Test, TestKey, usize);
